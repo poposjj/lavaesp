@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "lavaesp",
-  "version": "1.1.0",
+  "version": "1.5.0",
   "name": "Lava ESP",
   "description": "Highlights lava above y=64 in every loaded chunk. Built for Hypixel SkyBlock Crystal Hollows worm fishing.",
   "authors": [
