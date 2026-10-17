@@ -56,7 +56,7 @@ $env:JAVA_HOME = "C:\Program Files\Microsoft\jdk-25.0.3.9-hotspot"
 .\build.ps1 -McDir "D:\path\to\mc262"
 ```
 
-产物路径：`build\libs\lavaesp-1.0.0.jar`
+产物路径：`build\libs\lavaesp-1.5.0.jar`
 
 ## 依赖
 
