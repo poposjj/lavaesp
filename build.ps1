@@ -6,12 +6,10 @@
     <McDir>\libs\*.jar           Minecraft libraries
     <McDir>\fabric-api\*.jar     Fabric API 0.161.0+26.2 (nested modules unpacked)
 
-  The widened jar is required: RenderPipelines.register / DEBUG_FILLED_SNIPPET and
-  RenderType.create are private/package-private in 26.2, exactly like in the original mod,
-  so the same three members are opened through the mod's access widener.
+  Rendering goes through the vanilla Gizmos API, so no access widener is needed.
 #>
 param(
-    [string]$McDir = "D:\nixiang\melodysky_static\mc262",
+    [string]$McDir = ".\mc262",
     [string]$JavaHome = ""
 )
 
