@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 public final class LavaEspScreen extends Screen {
 
     private static final int PANEL_WIDTH = 260;
-    private static final int HEADER_HEIGHT = 118;
+    private static final int HEADER_HEIGHT = 130;
     private static final int ROW = 26;
     private static final int ROWS = 7;
 
@@ -132,6 +132,7 @@ public final class LavaEspScreen extends Screen {
         graphics.fill(x, y + 30, x + PANEL_WIDTH, y + 31, COLOR_SEPARATOR);
 
         String[] lines = {
+                "用途 — Hypixel SkyBlock · 水晶矿洞钓虫",
                 "开关 — 高亮所有 y≥64 的岩浆方块",
                 "淡出 — 远处渐隐，避免满屏",
                 "淡出起点 — 开始渐隐的距离 10~100",
