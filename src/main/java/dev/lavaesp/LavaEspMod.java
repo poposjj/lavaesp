@@ -65,6 +65,12 @@ public final class LavaEspMod implements ClientModInitializer {
     private final Timer timer = new Timer();
     private ClientLevel lastLevel;
 
+    /** diagnostics for the last completed scan: how many chunks were actually loaded */
+    private volatile int lastChunksLoaded;
+    private volatile int lastChunksTotal;
+    /** x/y/z bounds of the last result set, used to explain where the highlight stops */
+    private volatile int[] lastBounds = new int[0];
+
     private volatile boolean reportRequested;
     private volatile int pendingReport = -1;
     private long lastRenderLog;
@@ -91,7 +97,7 @@ public final class LavaEspMod implements ClientModInitializer {
     public void onInitializeClient() {
         instance = this;
         LavaEspConfig.load();
-        LOGGER.info("Lava ESP ready (build b13-menu, enabled={}, color=#{}) - every loaded chunk, y {}..{}",
+        LOGGER.info("Lava ESP ready (build b1.5.0, enabled={}, color=#{}) - every loaded chunk, y {}..{}",
                 LavaEspConfig.enabled, String.format("%08X", LavaEspConfig.color), MIN_SCAN_Y, MAX_SCAN_Y);
 
         LavaEspCommand.register();
@@ -190,17 +196,27 @@ public final class LavaEspMod implements ClientModInitializer {
         int maxY = Math.min(level.getMaxY(), MAX_SCAN_Y);
         int chunkX = center.getX() >> 4;
         int chunkZ = center.getZ() >> 4;
+        int loaded = 0;
+        int total = 0;
+        int minX = Integer.MAX_VALUE;
+        int maxFoundX = Integer.MIN_VALUE;
+        int minZ = Integer.MAX_VALUE;
+        int maxFoundZ = Integer.MIN_VALUE;
+        int minFoundY = Integer.MAX_VALUE;
+        int maxFoundY = Integer.MIN_VALUE;
 
         for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {
             for (int cz = chunkZ - radius; cz <= chunkZ + radius; cz++) {
                 if (Thread.currentThread().isInterrupted()) {
                     return result;
                 }
+                total++;
                 LevelChunk chunk = (LevelChunk) level.getChunkSource()
                         .getChunk(cx, cz, ChunkStatus.FULL, false);
                 if (chunk == null || chunk.isEmpty()) {
                     continue;
                 }
+                loaded++;
                 LevelChunkSection[] sections = chunk.getSections();
                 for (int index = 0; index < sections.length; index++) {
                     LevelChunkSection section = sections[index];
@@ -227,12 +243,23 @@ public final class LavaEspMod implements ClientModInitializer {
                                 }
                                 BlockPos pos = new BlockPos((cx << 4) + lx, y, (cz << 4) + lz);
                                 result.put(pos, isBuried(level, pos));
+                                if (pos.getX() < minX) { minX = pos.getX(); }
+                                if (pos.getX() > maxFoundX) { maxFoundX = pos.getX(); }
+                                if (pos.getZ() < minZ) { minZ = pos.getZ(); }
+                                if (pos.getZ() > maxFoundZ) { maxFoundZ = pos.getZ(); }
+                                if (pos.getY() < minFoundY) { minFoundY = pos.getY(); }
+                                if (pos.getY() > maxFoundY) { maxFoundY = pos.getY(); }
                             }
                         }
                     }
                 }
             }
         }
+        this.lastChunksLoaded = loaded;
+        this.lastChunksTotal = total;
+        this.lastBounds = result.isEmpty()
+                ? new int[0]
+                : new int[]{minX, maxFoundX, minFoundY, maxFoundY, minZ, maxFoundZ};
         return result;
     }
 
@@ -257,8 +284,13 @@ public final class LavaEspMod implements ClientModInitializer {
             this.lavaFaces.clear();
             this.lavaFaces.putAll(result);
             long buried = result.values().stream().filter(Boolean::booleanValue).count();
-            LOGGER.info("[LavaESP] scan #{} done in {} ms, {} blocks ({} buried)",
-                    id, System.currentTimeMillis() - this.scanStart, result.size(), buried);
+            int[] b = this.lastBounds;
+            String box = b.length == 0
+                    ? "none"
+                    : String.format("x %d..%d, y %d..%d, z %d..%d", b[0], b[1], b[2], b[3], b[4], b[5]);
+            LOGGER.info("[LavaESP] scan #{} done in {} ms, {} blocks ({} buried), chunks loaded {}/{}, bounds {}",
+                    id, System.currentTimeMillis() - this.scanStart, result.size(), buried,
+                    this.lastChunksLoaded, this.lastChunksTotal, box);
             if (this.reportRequested) {
                 this.reportRequested = false;
                 this.pendingReport = result.size();
