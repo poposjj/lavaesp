@@ -13,15 +13,15 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.network.chat.Component;
 
 /**
- * Command surface. {@code /lavaesp} on its own opens the settings screen; everything the screen can
- * do is also reachable without leaving the chat.
+ * Command surface. {@code /lavaesp} on its own opens the settings screen; every option is also
+ * reachable without leaving the chat.
  *
  * <pre>
  * /lavaesp                         open the settings screen (same one Mod Menu shows)
  * /lavaesp on | off                the module switch
- * /lavaesp color &lt;AARRGGBB&gt;        "Color"
- * /lavaesp fade &lt;true|false&gt;       "Fade"
- * /lavaesp fadestart &lt;10-100&gt;      "Fade start"
+ * /lavaesp color &lt;AARRGGBB&gt;        colour
+ * /lavaesp fade &lt;true|false&gt;       fade switch
+ * /lavaesp fadestart &lt;10-100&gt;      fade start distance
  * /lavaesp rescan                  drop the cache and scan again immediately
  * </pre>
  */
