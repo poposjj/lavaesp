@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "lavaesp",
+  "version": "1.1.0",
+  "name": "Lava ESP",
+  "description": "Highlights lava above y=64 in every loaded chunk - a standalone extraction of MelodySky's LavaESP module.",
+  "authors": [
+    "extracted"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.lavaesp.LavaEspMod"
+    ],
+    "modmenu": [
+      "dev.lavaesp.LavaEspModMenu"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.17.0",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": ">=20.0.0"
+  }
+}
