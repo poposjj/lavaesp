@@ -4,6 +4,8 @@
 
 一款独立的 Minecraft 26.2 / Fabric 客户端模组。用于高亮玩家周围所有 y ≥ 64 的岩浆方块，支持穿墙显示。
 
+**用途**：Hypixel SkyBlock 水晶矿洞（Crystal Hollows）钓虫时定位岩浆点位。
+
 本项目由 MelodySky 的 `LavaESP` 模块（`xyz.Melody.aa`）移植重构：移除了原模块的图形菜单，改为指令与模组菜单设置界面两种入口。
 
 ## 功能
