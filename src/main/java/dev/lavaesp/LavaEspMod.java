@@ -24,11 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Standalone extraction of MelodySky's {@code LavaESP} ({@code xyz.Melody.aa}).
+ * Lava ESP: highlights lava blocks at or above y 64 in every loaded chunk around the player.
  *
- * <p>Timing behaviour is kept from the original: one scan per 1000 ms on a daemon thread named
- * {@code "Lava scanner"}, a 10 s watchdog, a generation counter so a stale scan cannot overwrite a
- * newer one, and the same distance fade.
+ * <p>Scanning: one pass every 1000 ms on a daemon thread named {@code "Lava scanner"}, a 10 s
+ * watchdog, and a generation counter so a stale pass cannot overwrite a newer one.
  *
  * <p>Region: every loaded chunk around the player (no x/z limit) from y 64 up to y 200.
  *
@@ -50,9 +49,7 @@ public final class LavaEspMod implements ClientModInitializer {
     /** alpha multiplier for blocks that are completely surrounded by lava */
     private static final double BURIED_ALPHA_FACTOR = 0.10;
 
-    /** aa: private static final long a$440b4703 = 10000L; */
     private static final long SCAN_TIMEOUT_MS = 10_000L;
-    /** aa: this.a$286dcaba.hasReached(1000.0) */
     private static final double SCAN_INTERVAL_MS = 1000.0;
 
     private static LavaEspMod instance;
@@ -60,17 +57,11 @@ public final class LavaEspMod implements ClientModInitializer {
     /** lava blocks in range -> {@code true} when all six neighbours are lava as well */
     private final Map<BlockPos, Boolean> lavaFaces = new ConcurrentHashMap<>();
 
-    /** aa: volatile boolean b$59bc5767 */
     private volatile boolean scanning;
-    /** aa: volatile long b */
     private volatile long scanStart;
-    /** aa: volatile int a */
     private volatile int generation;
-    /** aa: volatile Thread a$98d57e1f */
     private volatile Thread scanThread;
-    /** aa: AtomicInteger a$cd52b63a */
     private final AtomicInteger generationCounter = new AtomicInteger();
-    /** aa: TimerUtil a$286dcaba */
     private final Timer timer = new Timer();
     private ClientLevel lastLevel;
 
@@ -343,7 +334,7 @@ public final class LavaEspMod implements ClientModInitializer {
 
     // ------------------------------------------------------------------- misc
 
-    /** the original's TimerUtil, reduced to what this module uses */
+    /** millisecond stopwatch used to pace the scan interval */
     private static final class Timer {
         private long last = System.currentTimeMillis();
 
