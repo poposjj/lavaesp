@@ -49,7 +49,7 @@ $fabricJson = Get-Content (Join-Path $staging "fabric.mod.json") -Raw
 [IO.File]::WriteAllText((Join-Path $staging "fabric.mod.json"), $fabricJson,
     (New-Object System.Text.UTF8Encoding($false)))
 
-$jarFile = Join-Path $root "build\libs\lavaesp-1.0.0.jar"
+$jarFile = Join-Path $root "build\libs\lavaesp-1.5.0.jar"
 if (Test-Path $jarFile) { Remove-Item $jarFile -Force }
 & $jar --create --file $jarFile -C $staging .
 if ($LASTEXITCODE -ne 0) { throw "jar failed" }
