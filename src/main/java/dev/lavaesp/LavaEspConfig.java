@@ -8,23 +8,17 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 /**
- * Only the three settings the original ClickGUI exposed, plus the on/off state:
- * {@code Color}, {@code Fade}, {@code Fade start}.
+ * The three settings plus the on/off state: {@code color}, {@code fade}, {@code fadeStart}.
  *
- * <p>Ranges and defaults are taken verbatim from the original module:
- * {@code new bd("Color", new Color(0,255,255,160).getRGB())},
- * {@code new bg("Fade", true)}, {@code new bf("Fade start", 25.0, 10.0, 100.0)}.
+ * <p>Defaults: cyan {@code 0xA000FFFF}, fade on, fade start 25 blocks (range 10..100).
+ * Persisted as a plain properties file at {@code config/lavaesp.properties}.
  */
 public final class LavaEspConfig {
 
     private static final Path FILE = Path.of("config", "lavaesp.properties");
 
-    /**
-     * the module switch in the top right of the menu row.
-     * The original shipped as "off"; here it defaults to on because the GUI switch is gone and
-     * an installed module that silently does nothing is indistinguishable from a broken one.
-     * /lavaesp still toggles it and the resulting state is persisted.
-     */
+    /** master switch; defaults to on so an installed mod is not silently inactive */
+
     public static boolean enabled = true;
 
     /** "Color" - 0xAARRGGBB, default = Color(0, 255, 255, 160) */
