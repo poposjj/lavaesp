@@ -6,7 +6,7 @@
 
 **用途**：Hypixel SkyBlock 水晶矿洞（Crystal Hollows）钓虫时定位岩浆点位。
 
-本项目由 MelodySky 的 `LavaESP` 模块（`xyz.Melody.aa`）移植重构：移除了原模块的图形菜单，改为指令与模组菜单设置界面两种入口。
+设置入口有两个：游戏内指令，以及模组菜单中的配置界面。
 
 ## 功能
 
@@ -70,12 +70,10 @@ $env:JAVA_HOME = "C:\Program Files\Microsoft\jdk-25.0.3.9-hotspot"
 
 ## 实现说明
 
-- 扫描范围与时间参数（1000 毫秒间隔、10 秒超时、代际号、淡出公式）沿用原模块设计。
-- 渲染由原模块的 `submitCustomGeometry` 配合自定义 `DEPTH_QUADS_3D` 管线，改为香草调试渲染 API `Gizmos`。26.2 的提交式渲染管线对自定义 `RenderType` 支持有限。
-- 内部方块与外壳方块的分档着色为本项目新增。
+- 渲染使用香草调试渲染 API `Gizmos`。26.2 的提交式渲染管线对自定义 `RenderType` 支持有限，`Gizmos` 在不同环境下更稳定。
 
 ## 许可与声明
 
 仅供个人在 Hypixel SkyBlock 中使用。在任何服务器使用第三方模组均存在封禁风险，请自行判断。
 
-本项目与 Hypixel、Mojang、Fabric 及 MelodySky 作者无任何关联。
+本项目与 Hypixel、Mojang、Fabric 无任何关联。
