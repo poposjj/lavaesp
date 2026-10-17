@@ -45,7 +45,7 @@ public final class LavaEspScreen extends Screen {
     private EditBox colorField;
 
     public LavaEspScreen(Screen parent) {
-        super(Component.literal("Lava ESP"));
+        super(Component.literal("Lava ESP v1.5.0"));
         this.parent = parent;
     }
 
@@ -127,7 +127,7 @@ public final class LavaEspScreen extends Screen {
         int bottom = y + HEADER_HEIGHT + ROWS * ROW + 4;
         graphics.fill(x - 8, y - 8, x + PANEL_WIDTH + 8, bottom, COLOR_BACKDROP);
 
-        graphics.centeredText(this.font, Component.literal("Lava ESP"), x + PANEL_WIDTH / 2, y + 2, COLOR_TITLE);
+        graphics.centeredText(this.font, Component.literal("Lava ESP v1.5.0"), x + PANEL_WIDTH / 2, y + 2, COLOR_TITLE);
         graphics.centeredText(this.font, Component.literal("by oioi"), x + PANEL_WIDTH / 2, y + 15, COLOR_AUTHOR);
         graphics.fill(x, y + 30, x + PANEL_WIDTH, y + 31, COLOR_SEPARATOR);
 
